@@ -2,7 +2,7 @@
 //
 // Filtreur.js
 // 0.9 Beta
-// 7 March 2019
+// 8 March 2019
 //
 // www.achrafkassioui.com/filtreur/
 //
@@ -61,65 +61,29 @@
 
     ////////////////////////////////////////////////////////////////////////
     //
-    // Public methods
-    //
-    ////////////////////////////////////////////////////////////////////////
-
-    filtreur.filter = function (options) {
-        if (options.filter === filtreur.all && filtreur.current === filtreur.all) return;
-
-        if (filtreur.toggle && options.filter === filtreur.current) return unFilter(options);
-
-        filtreur.current = options.filter;
-
-        if (filtreur.current === filtreur.all) return unFilter(options);
-
-        getItems(options.collection).filter(function (item) {
-            if (!(item.hasAttribute('data-filter') && !item.hasAttribute('data-filter-in'))) return;
-            var filters = item.getAttribute('data-filter').split(' ');
-            var hasCategory = (filters.indexOf(options.filter) > -1);
-
-            if (!hasCategory) {
-                item.classList.add(filtreur.unfiltered);
-                item.classList.remove(filtreur.filtered);
-            } else {
-                item.classList.remove(filtreur.unfiltered);
-                item.classList.add(filtreur.filtered);
-            }
-        });
-
-        filtreur.collection = options.collection;
-
-        updateUI(options);
-
-        if (filtreur.callback_start) filtreur.callback_start();
-    }
-
-    ////////////////////////////////////////////////////////////////////////
-    //
     // Private methods
     //
     ////////////////////////////////////////////////////////////////////////
 
-    function unFilter(options) {
-        options.filter = filtreur.current = filtreur.all;
+    function unFilter(data) {
+        data.filter = filtreur.current = filtreur.all;
 
-        getItems(options.collection).filter(function (item) {
+        getItems(data.collection).filter(function (item) {
             if (item.classList.contains(filtreur.unfiltered)) item.classList.remove(filtreur.unfiltered);
             if (item.classList.contains(filtreur.filtered)) item.classList.remove(filtreur.filtered);
         });
 
         filtreur.collection = null;
 
-        updateUI(options);
+        updateUI(data);
 
         if (filtreur.callback_end) filtreur.callback_end();
     }
 
-    function updateUI(options) {
-        getButtons(options.collection).filter(function (button) {
+    function updateUI(data) {
+        getButtons(data.collection).filter(function (button) {
             var filters = button.getAttribute('data-filter').split(' ');
-            var hasCategory = (filters.indexOf(options.filter) > -1);
+            var hasCategory = (filters.indexOf(data.filter) > -1);
             var isSelectBox = button.parentElement.selectedIndex;
 
             if (hasCategory) {
@@ -143,7 +107,7 @@
     }
 
     function setupKeyboardShortcuts(){
-        var buttons = [].slice.call(document.querySelectorAll('[data-filter-keycode'));
+        var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-filter-keycode]'));
         if(!buttons) return;
 
         filtreur.keyboard = true;
@@ -169,6 +133,42 @@
 
     ////////////////////////////////////////////////////////////////////////
     //
+    // API
+    //
+    ////////////////////////////////////////////////////////////////////////
+
+    filtreur.filter = function (data) {
+        if (data.filter === filtreur.all && filtreur.current === filtreur.all) return;
+
+        if (filtreur.toggle && data.filter === filtreur.current) return unFilter(data);
+
+        filtreur.current = data.filter;
+
+        if (filtreur.current === filtreur.all) return unFilter(data);
+
+        getItems(data.collection).filter(function (item) {
+            if (!(item.hasAttribute('data-filter') && !item.hasAttribute('data-filter-in'))) return;
+            var filters = item.getAttribute('data-filter').split(' ');
+            var hasCategory = (filters.indexOf(data.filter) > -1);
+
+            if (!hasCategory) {
+                item.classList.add(filtreur.unfiltered);
+                item.classList.remove(filtreur.filtered);
+            } else {
+                item.classList.remove(filtreur.unfiltered);
+                item.classList.add(filtreur.filtered);
+            }
+        });
+
+        filtreur.collection = data.collection;
+
+        updateUI(data);
+
+        if (filtreur.callback_start) filtreur.callback_start();
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    //
     // Event handler
     //
     ////////////////////////////////////////////////////////////////////////
@@ -179,12 +179,10 @@
             var hasFilter = e.target.hasAttribute('data-filter');
             if (!isButton || !hasFilter) return;
 
-            var options = {
+            filtreur.filter({
                 filter: e.target.dataset.filter,
                 collection: e.target.dataset.filterIn
-            };
-
-            filtreur.filter(options);
+            });
         }
 
         if (e.type === 'change') {
@@ -193,31 +191,28 @@
             var hasFilter = e.target.options[e.target.selectedIndex].hasAttribute('data-filter');
             if (!((isSelectBox != undefined) && isButton && hasFilter)) return;
 
-            var options = {
+            filtreur.filter({
                 filter: e.target.options[e.target.selectedIndex].dataset.filter,
                 collection: e.target.options[e.target.selectedIndex].dataset.filterIn
-            };
-
-            filtreur.filter(options);
+            });
         }
 
         if (e.type === 'keydown') {
             var modifiers = e.ctrlKey || e.shiftKey || e.altKey;
-            
+
             if (filtreur.keyboard && filtreur.keycodes[e.keyCode] && !modifiers){
                 var button = document.querySelector('[data-filter-keycode="' + e.keyCode + '"]');
-                var options = {
+
+                filtreur.filter({
                     filter: button.getAttribute('data-filter'),
                     collection: button.getAttribute('data-filter-in')
-                }
-                filtreur.filter(options);
+                });
             }
 
             if (filtreur.escape && e.keyCode === 27 && filtreur.collection && !modifiers) {
-                var options = {
+                unFilter({
                     collection: filtreur.collection
-                };
-                unFilter(options);
+                });
             }
         }
     }
