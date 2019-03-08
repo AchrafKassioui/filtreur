@@ -34,7 +34,6 @@
     }
 })(typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : this, function(window){
     'use strict';
-
     ////////////////////////////////////////////////////////////////////////
     //
     // Variables
