@@ -2,7 +2,7 @@
 //
 // Filtreur.js
 // 0.9 Beta
-// 8 March 2019
+// 14 March 2019
 //
 // www.achrafkassioui.com/filtreur/
 //
@@ -50,9 +50,9 @@
     ////////////////////////////////////////////////////////////////////////
 
     filtreur.all = 'all';
-    filtreur.unfiltered = 'unfiltered';
-    filtreur.filtered = 'filtered';
-    filtreur.button_selected = 'selected';
+    filtreur.filtered_out = 'filtered_out';
+    filtreur.filtered_in = 'filtered_in';
+    filtreur.control_selected = 'selected';
     filtreur.toggle = true;
     filtreur.escape = true;
     filtreur.keyboard = false;
@@ -68,8 +68,8 @@
         data.filter = filtreur.current = filtreur.all;
 
         getItems(data.collection).filter(function (item) {
-            if (item.classList.contains(filtreur.unfiltered)) item.classList.remove(filtreur.unfiltered);
-            if (item.classList.contains(filtreur.filtered)) item.classList.remove(filtreur.filtered);
+            if (item.classList.contains(filtreur.filtered_out)) item.classList.remove(filtreur.filtered_out);
+            if (item.classList.contains(filtreur.filtered_in)) item.classList.remove(filtreur.filtered_in);
         });
 
         filtreur.collection = null;
@@ -80,17 +80,17 @@
     }
 
     function updateUI(data) {
-        getButtons(data.collection).filter(function (button) {
-            var filters = button.getAttribute('data-filter').split(' ');
+        getControls(data.collection).filter(function (control) {
+            var filters = control.getAttribute('data-filter').split(' ');
             var hasCategory = (filters.indexOf(data.filter) > -1);
-            var isSelectBox = button.parentElement.selectedIndex;
+            var isSelectBox = control.parentElement.selectedIndex;
 
             if (hasCategory) {
-                if (isSelectBox != undefined) button.setAttribute('selected', 'true');
-                else button.classList.add(filtreur.button_selected);
+                if (isSelectBox != undefined) control.setAttribute('selected', 'true');
+                else control.classList.add(filtreur.control_selected);
             } else {
-                if (isSelectBox != undefined) button.removeAttribute('selected');
-                button.classList.remove(filtreur.button_selected);
+                if (isSelectBox != undefined) control.removeAttribute('selected');
+                control.classList.remove(filtreur.control_selected);
             }
         });
     }
@@ -100,29 +100,29 @@
         return items;
     }
 
-    function getButtons(collection){
-        var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-filter-in=' + collection +']'));
-        return buttons;
+    function getControls(collection){
+        var controls = Array.prototype.slice.call(document.querySelectorAll('[data-filter-in=' + collection +']'));
+        return controls;
     }
 
     function setupKeyboardShortcuts(){
-        var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-filter-keycode]'));
-        if(!buttons) return;
+        var controls = Array.prototype.slice.call(document.querySelectorAll('[data-filter-keycode]'));
+        if(!controls) return;
 
         filtreur.keyboard = true;
 
-        buttons.filter(function(button){
-            var keycode = button.getAttribute('data-filter-keycode');
+        controls.filter(function(control){
+            var keycode = control.getAttribute('data-filter-keycode');
 
-            var filter = button.getAttribute('data-filter');
+            var filter = control.getAttribute('data-filter');
             if(!filter){
-                var obj = {item: button};
+                var obj = {item: control};
                 return console.warn('Filtreur:', obj.item, ' has no "data-filter" attribute');
             }
 
-            var collection = button.getAttribute('data-filter-in');
+            var collection = control.getAttribute('data-filter-in');
             if(!collection){
-                var obj = {item: button};
+                var obj = {item: control};
                 return console.warn('Filtreur:', obj.item, ' has no "data-filter-in" attribute');
             }
 
@@ -151,11 +151,11 @@
             var hasCategory = (filters.indexOf(data.filter) > -1);
 
             if (!hasCategory) {
-                item.classList.add(filtreur.unfiltered);
-                item.classList.remove(filtreur.filtered);
+                item.classList.add(filtreur.filtered_out);
+                item.classList.remove(filtreur.filtered_in);
             } else {
-                item.classList.remove(filtreur.unfiltered);
-                item.classList.add(filtreur.filtered);
+                item.classList.remove(filtreur.filtered_out);
+                item.classList.add(filtreur.filtered_in);
             }
         });
 
@@ -174,9 +174,9 @@
 
     function eventHandler(e) {
         if (e.type === 'click') {
-            var isButton = e.target.hasAttribute('data-filter-in');
+            var isControl = e.target.hasAttribute('data-filter-in');
             var hasFilter = e.target.hasAttribute('data-filter');
-            if (!isButton || !hasFilter) return;
+            if (!isControl || !hasFilter) return;
 
             filtreur.filter({
                 filter: e.target.dataset.filter,
@@ -186,9 +186,9 @@
 
         if (e.type === 'change') {
             var isSelectBox = e.target.selectedIndex;
-            var isButton = e.target.options[e.target.selectedIndex].hasAttribute('data-filter-in');
+            var isControl = e.target.options[e.target.selectedIndex].hasAttribute('data-filter-in');
             var hasFilter = e.target.options[e.target.selectedIndex].hasAttribute('data-filter');
-            if (!((isSelectBox != undefined) && isButton && hasFilter)) return;
+            if (!((isSelectBox != undefined) && isControl && hasFilter)) return;
 
             filtreur.filter({
                 filter: e.target.options[e.target.selectedIndex].dataset.filter,
@@ -234,3 +234,13 @@
 
     return filtreur;
 });
+
+/*
+
+To do
+
+- Should controls accept multiple filters?
+- Similar control keycodes should work on all collections.
+- filtreur.live option. I false, store the controls and items in a variable on startup.
+
+*/
