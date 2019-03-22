@@ -95,7 +95,7 @@
     function updateUI(data) {
         getControls(data.collection).filter(function (control) {
             var filters = control.getAttribute(data_attribute_filter).split(' ');
-            // add fail safe to deal with buttons without a data-filter
+            // add fail-safe to deal with controls without a data-filter
             var hasCategory = (filters.indexOf(data.filter) > -1);
             var isSelectBox = control.parentElement.selectedIndex;
 
@@ -129,14 +129,14 @@
             var keycode = control.getAttribute(data_attribute_keycode);
 
             var filter = control.getAttribute(data_attribute_filter);
-            // Move the failsafe check below into the sanitize function
+            // Move the fail-safe check below to the sanitize function
             if(!filter){
                 var obj = {item: control};
                 return console.warn('Filtreur:', obj.item, ' has no ' + JSON.stringify(data_attribute_filter) + ' attribute');
             }
 
             var collection = control.getAttribute(data_attribute_filter_in);
-            // Move the failsafe check below into the sanitize function
+            // Move the fail-safe check below to the sanitize function
             if(!collection){
                 var obj = {item: control};
                 return console.warn('Filtreur:', obj.item, ' has no ' + JSON.stringify(data_attribute_filter_in) + ' attribute');
@@ -191,6 +191,8 @@
 
     filtreur.stop = function(){
         if(filtreur.running === false) return;
+        
+        // undo setupKeyboardShortcuts() ?
 
         document.removeEventListener('click', eventHandler, false);
         document.removeEventListener('change', eventHandler, false);
