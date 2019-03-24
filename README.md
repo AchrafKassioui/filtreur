@@ -1,5 +1,9 @@
 # Filtreur.js
 
-HTML declarative library for filtering elements on a web page.
+![Filtreur](filtreur.png)
 
-*Work in progress. Documentation will be published once v1.0 is released.*
+**Declarative user interface library for filtering elements on a web page.**
+
+See [**demo and documentation here**](https://www.achrafkassioui.com/filtreur/).
+
+*Work in progress. Documentation will be updated once v1.0 is released.*
