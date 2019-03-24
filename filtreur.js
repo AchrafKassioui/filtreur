@@ -2,7 +2,7 @@
 //
 // Filtreur.js
 // 0.9 Beta
-// 22 March 2019
+// 24 March 2019
 //
 // www.achrafkassioui.com/filtreur/
 //
@@ -78,7 +78,7 @@
     ////////////////////////////////////////////////////////////////////////
 
     function unFilter(data) {
-        data.filter = filtreur.current = filtreur.all;
+        data.filter = filtreur.current_filter = filtreur.all;
 
         getItems(data.collection).filter(function (item) {
             if (item.classList.contains(filtreur.filtered_out)) item.classList.remove(filtreur.filtered_out);
@@ -153,13 +153,13 @@
     ////////////////////////////////////////////////////////////////////////
 
     filtreur.filter = function (data) {
-        if (data.filter === filtreur.all && filtreur.current === filtreur.all) return;
+        if (data.filter === filtreur.all && filtreur.current_filter === filtreur.all) return;
 
-        if (filtreur.toggle && data.filter === filtreur.current && data.collection === filtreur.collection) return unFilter(data);
+        if (filtreur.toggle && data.filter === filtreur.current_filter && data.collection === filtreur.collection) return unFilter(data);
 
-        filtreur.current = data.filter;
+        filtreur.current_filter = data.filter;
 
-        if (filtreur.current === filtreur.all) return unFilter(data);
+        if (filtreur.current_filter === filtreur.all) return unFilter(data);
 
         getItems(data.collection).filter(function (item) {
             if (!(item.hasAttribute(data_attribute_filter) && !item.hasAttribute(data_attribute_filter_in))) return;
@@ -191,7 +191,7 @@
 
     filtreur.stop = function(){
         if(filtreur.running === false) return;
-        
+
         // undo setupKeyboardShortcuts() ?
 
         document.removeEventListener('click', eventHandler, false);
@@ -284,7 +284,6 @@ To do
 - Write a sanitize function that runs on startup
 - Should controls accept multiple filters?
 - Similar control keycodes should work on all collections.
-- filtreur.live setting. If false, store the all controls and collections in a variable on startup.
-- Bug: pressing escape when an option in a select box has been selected with the keyboard does not select the all option
+- Bug (unidentified): sometimes hitting escape to unfilter a select box does not select the all option
 
 */
