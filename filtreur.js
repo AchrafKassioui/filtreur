@@ -2,7 +2,7 @@
 //
 // Filtreur.js
 // 0.9 Beta
-// 24 March 2019
+// 27 March 2019
 //
 // www.achrafkassioui.com/filtreur/
 //
@@ -40,12 +40,11 @@
     //
     ////////////////////////////////////////////////////////////////////////
 
-    var supports = !!document.addEventListener && !!document.querySelector && !!Array.prototype.filter && !!Array.prototype.includes;
-    var filtreur = {
-        running: false,
-        keyboard: false,
-        keycodes: {}
-    };
+    var supports = !!document.addEventListener && !!document.querySelector && !!Array.prototype.filter;
+    var filtreur = {};
+
+    filtreur.keycodes = {};
+    filtreur.running = false;
 
     ////////////////////////////////////////////////////////////////////////
     //
@@ -94,8 +93,8 @@
 
     function updateUI(data) {
         getControls(data.collection).filter(function (control) {
-            var filters = control.getAttribute(data_attribute_filter).split(' ');
-            // add fail-safe to deal with controls without a data-filter
+            var filters = control.getAttribute(data_attribute_filter);
+            if (!filters) return;
             var hasCategory = (filters.indexOf(data.filter) > -1);
             var isSelectBox = control.parentElement.selectedIndex;
 
@@ -119,32 +118,33 @@
         return controls;
     }
 
-    function setupKeyboardShortcuts(){
-        var controls = Array.prototype.slice.call(document.querySelectorAll('[' + data_attribute_keycode + ']'));
-        if(!controls) return;
+    function getKeyboardShortcuts(){
+        var controls_with_keycodes = Array.prototype.slice.call(document.querySelectorAll('[' + data_attribute_keycode + ']'));
+        if (!controls_with_keycodes) return;
 
-        filtreur.keyboard = true;
+        controls_with_keycodes.filter(function(control){
+            if (!control.getAttribute(data_attribute_filter_in)) {
+                var obj = {item: control};
+                return console.warn('Filtreur:', obj.item, ' has no ' + JSON.stringify(data_attribute_filter_in) + ' attribute');
+            }else{
+                var keycode = control.getAttribute(data_attribute_keycode);
+                filtreur.keycodes[keycode] = 1;
+            }
+        });
+    }
+
+    function sanitize(){
+        var controls = Array.prototype.slice.call(document.querySelectorAll('[' + data_attribute_filter_in + ']'));
+        if (!controls) return;
 
         controls.filter(function(control){
-            var keycode = control.getAttribute(data_attribute_keycode);
-
             var filter = control.getAttribute(data_attribute_filter);
-            // Move the fail-safe check below to the sanitize function
-            if(!filter){
+            if (!filter) {
                 var obj = {item: control};
                 return console.warn('Filtreur:', obj.item, ' has no ' + JSON.stringify(data_attribute_filter) + ' attribute');
             }
-
-            var collection = control.getAttribute(data_attribute_filter_in);
-            // Move the fail-safe check below to the sanitize function
-            if(!collection){
-                var obj = {item: control};
-                return console.warn('Filtreur:', obj.item, ' has no ' + JSON.stringify(data_attribute_filter_in) + ' attribute');
-            }
-
-            filtreur.keycodes[keycode] = 1;
         });
-    }
+    };
 
     ////////////////////////////////////////////////////////////////////////
     //
@@ -162,7 +162,7 @@
         if (filtreur.current_filter === filtreur.all) return unFilter(data);
 
         getItems(data.collection).filter(function (item) {
-            if (!(item.hasAttribute(data_attribute_filter) && !item.hasAttribute(data_attribute_filter_in))) return;
+            if ( !(item.hasAttribute(data_attribute_filter) && !item.hasAttribute(data_attribute_filter_in)) ) return;
             var filters = item.getAttribute(data_attribute_filter).split(' ');
             var hasCategory = (filters.indexOf(data.filter) > -1);
 
@@ -182,17 +182,10 @@
         updateUI(data);
     }
 
-    filtreur.sanitize = function(){
-        // if an element has a data-filter-in, check if it has data-filter
-        // if an element has a data-filter-keycode, check if it has a data-filter and a data-filter-in
-        // if there is no collection, warn
-        // if there is a collection, check if it has elements that can filtered (i.e. with a data-filter only)
-    };
-
     filtreur.stop = function(){
         if(filtreur.running === false) return;
 
-        // undo setupKeyboardShortcuts() ?
+        filtreur.keycodes = {};
 
         document.removeEventListener('click', eventHandler, false);
         document.removeEventListener('change', eventHandler, false);
@@ -203,10 +196,11 @@
     };
 
     filtreur.start = function(){
-        if (!supports) return console.warn('Filtreur.js is not supported on this browser');
+        if (!supports) return console.log('Filtreur.js is not supported on this browser');
         filtreur.stop();
+        sanitize();
 
-        setupKeyboardShortcuts();
+        getKeyboardShortcuts();
 
         document.addEventListener('click', eventHandler, false);
         document.addEventListener('change', eventHandler, false);
@@ -249,12 +243,13 @@
         if (e.type === 'keydown') {
             var modifiers = e.ctrlKey || e.shiftKey || e.altKey;
 
-            if (filtreur.keyboard && filtreur.keycodes[e.keyCode] && !modifiers){
-                var button = document.querySelector('[' + data_attribute_keycode + '="' + e.keyCode + '"]');
+            if (filtreur.keycodes[e.keyCode] && !modifiers){
+                console.log(e.keyCode);
+                var control = document.querySelector('[' + data_attribute_keycode + '="' + e.keyCode + '"]');
 
                 filtreur.filter({
-                    filter: button.getAttribute(data_attribute_filter),
-                    collection: button.getAttribute(data_attribute_filter_in)
+                    filter: control.getAttribute(data_attribute_filter),
+                    collection: control.getAttribute(data_attribute_filter_in)
                 });
             }
 
@@ -281,7 +276,7 @@
 
 To do
 
-- Write a sanitize function that runs on startup
+- Refactor sanitize() and getKeyboardShortcuts()
 - Should controls accept multiple filters?
 - Similar control keycodes should work on all collections.
 - Bug (unidentified): sometimes hitting escape to unfilter a select box does not select the all option
