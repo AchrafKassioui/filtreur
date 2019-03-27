@@ -88,13 +88,14 @@
 
         if (filtreur.callback_end) filtreur.callback_end();
 
-        updateUI(data);
+        updateControls(data);
     }
 
-    function updateUI(data) {
+    function updateControls(data) {
         getControls(data.collection).filter(function (control) {
             var filters = control.getAttribute(data_attribute_filter);
             if (!filters) return;
+            
             var hasCategory = (filters.indexOf(data.filter) > -1);
             var isSelectBox = control.parentElement.selectedIndex;
 
@@ -109,7 +110,10 @@
     }
 
     function getItems(collection){
-        var items = Array.prototype.slice.call(document.querySelectorAll('[' + data_attribute_collection + '=' + collection +'] *'));
+        var children = Array.prototype.slice.call(document.querySelectorAll('[' + data_attribute_collection + '=' + collection +'] *'));
+        var items = children.filter(function(item){
+            return (item.hasAttribute(data_attribute_filter) && !item.hasAttribute(data_attribute_filter_in));
+        });
         return items;
     }
 
@@ -162,7 +166,6 @@
         if (filtreur.current_filter === filtreur.all) return unFilter(data);
 
         getItems(data.collection).filter(function (item) {
-            if ( !(item.hasAttribute(data_attribute_filter) && !item.hasAttribute(data_attribute_filter_in)) ) return;
             var filters = item.getAttribute(data_attribute_filter).split(' ');
             var hasCategory = (filters.indexOf(data.filter) > -1);
 
@@ -179,7 +182,7 @@
 
         if (filtreur.callback_start) filtreur.callback_start();
 
-        updateUI(data);
+        updateControls(data);
     }
 
     filtreur.stop = function(){
@@ -244,7 +247,6 @@
             var modifiers = e.ctrlKey || e.shiftKey || e.altKey;
 
             if (filtreur.keycodes[e.keyCode] && !modifiers){
-                console.log(e.keyCode);
                 var control = document.querySelector('[' + data_attribute_keycode + '="' + e.keyCode + '"]');
 
                 filtreur.filter({
@@ -278,7 +280,6 @@ To do
 
 - Refactor sanitize() and getKeyboardShortcuts()
 - Should controls accept multiple filters?
-- Similar control keycodes should work on all collections.
 - Bug (unidentified): sometimes hitting escape to unfilter a select box does not select the all option
 
 */
