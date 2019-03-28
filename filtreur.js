@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////
 //
 // Filtreur.js
-// 0.9 Beta
-// 27 March 2019
+// 0.9
+// 28 March 2019
 //
 // www.achrafkassioui.com/filtreur/
 //
@@ -190,7 +190,7 @@
 
         filtreur.keycodes = {};
 
-        document.removeEventListener('click', eventHandler, false);
+        document.removeEventListener('mousedown', eventHandler, false);
         document.removeEventListener('change', eventHandler, false);
         document.removeEventListener('keydown', eventHandler, false);
 
@@ -205,7 +205,7 @@
 
         getKeyboardShortcuts();
 
-        document.addEventListener('click', eventHandler, false);
+        document.addEventListener('mousedown', eventHandler, false);
         document.addEventListener('change', eventHandler, false);
         document.addEventListener('keydown', eventHandler, false);
 
@@ -220,7 +220,7 @@
     ////////////////////////////////////////////////////////////////////////
 
     function eventHandler(e) {
-        if (e.type === 'click') {
+        if (e.type === 'mousedown') {
             var isControl = e.target.hasAttribute(data_attribute_filter_in);
             var hasFilter = e.target.hasAttribute(data_attribute_filter);
             if (!isControl || !hasFilter) return;
@@ -280,6 +280,7 @@ To do
 
 - Refactor sanitize() and getKeyboardShortcuts()
 - Should controls accept multiple filters?
+- Mozilla Firefox: filtering with select doesn't work with the mouse
 - Bug (unidentified): sometimes hitting escape to unfilter a select box does not select the all option
 
 */
