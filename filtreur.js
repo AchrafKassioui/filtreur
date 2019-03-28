@@ -190,7 +190,7 @@
 
         filtreur.keycodes = {};
 
-        document.removeEventListener('mousedown', eventHandler, false);
+        document.removeEventListener('click', eventHandler, false);
         document.removeEventListener('change', eventHandler, false);
         document.removeEventListener('keydown', eventHandler, false);
 
@@ -205,7 +205,7 @@
 
         getKeyboardShortcuts();
 
-        document.addEventListener('mousedown', eventHandler, false);
+        document.addEventListener('click', eventHandler, false);
         document.addEventListener('change', eventHandler, false);
         document.addEventListener('keydown', eventHandler, false);
 
@@ -220,7 +220,7 @@
     ////////////////////////////////////////////////////////////////////////
 
     function eventHandler(e) {
-        if (e.type === 'mousedown') {
+        if (e.type === 'click') {
             var isControl = e.target.hasAttribute(data_attribute_filter_in);
             var hasFilter = e.target.hasAttribute(data_attribute_filter);
             if (!isControl || !hasFilter) return;
