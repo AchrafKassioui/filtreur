@@ -2,7 +2,7 @@
 //
 // Filtreur.js
 // 0.9 beta
-// 28 March 2019
+// 31 March 2019
 //
 // www.achrafkassioui.com/filtreur/
 //
@@ -104,7 +104,7 @@
                 else control.classList.add(filtreur.selected_filter);
             } else {
                 if (isSelectBox != undefined) control.removeAttribute('selected');
-                control.classList.remove(filtreur.selected_filter);
+                else control.classList.remove(filtreur.selected_filter);
             }
         });
     }
@@ -221,6 +221,11 @@
 
     function eventHandler(e) {
         if (e.type === 'click') {
+            // On a select box, Firefox and Edge require to click an option twice for filtering to work
+            // This ignores click events on select boxes and forces the browser to listen to change events only
+            var tag = e.target.tagName.toLowerCase();
+            if(tag === 'select' || tag === 'option') return;
+
             var isControl = e.target.hasAttribute(data_attribute_filter_in);
             var hasFilter = e.target.hasAttribute(data_attribute_filter);
             if (!isControl || !hasFilter) return;
@@ -278,9 +283,9 @@
 
 To do
 
-- Refactor sanitize() and getKeyboardShortcuts()
-- Should controls accept multiple filters?
-- Mozilla Firefox: filtering with select doesn't work with the mouse
-- Bug (unidentified): sometimes hitting escape to unfilter a select box does not select the all option
+- Refactor: sanitize() and getKeyboardShortcuts()
+- Bug: hitting Escape to unfilter a select box does not always select the "all" option
+- Maybe: add unselected_filter CSS class?
+- Maybe: should controls accept multiple filters?
 
 */
