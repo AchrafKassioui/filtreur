@@ -2,7 +2,7 @@
 //
 // Filtreur.js
 // 0.9 beta
-// 31 March 2019
+// 14 May 2019
 //
 // www.achrafkassioui.com/filtreur/
 //
@@ -56,7 +56,7 @@
     filtreur.filtered_out = 'filtered_out';
     filtreur.filtered_in = 'filtered_in';
     filtreur.selected_filter = 'selected_filter';
-    filtreur.toggle = true;
+    filtreur.toggle = false;
     filtreur.escape = true;
 
     ////////////////////////////////////////////////////////////////////////
