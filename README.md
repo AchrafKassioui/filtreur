@@ -6,7 +6,7 @@
 
 Declarative user interface library for filtering elements on a web page.
 
-Visit [**achrafkassioui.com/filtreur**](https://www.achrafkassioui.com/filtreur/).
+Demo and documentation: [**achrafkassioui.com/filtreur**](https://www.achrafkassioui.com/filtreur/).
 
 ## Change Log
 
