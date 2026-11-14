@@ -4,15 +4,7 @@
 
 # Filtreur.js
 
-**Declarative user interface library for filtering elements on a web page.** Mark your filters and your elements with data attributes, and Filtreur turns them into a live filtering interface, with keyboard shortcuts.
-
-## Setup
-
-Include `filtreur.js`. It starts on its own:
-
-```html
-<script src="filtreur.js"></script>
-```
+**Declarative user interface library for filtering elements on a web page.**
 
 ## Demo & Documentation
 
@@ -23,7 +15,6 @@ Visit [**achrafkassioui.com/filtreur**](https://www.achrafkassioui.com/filtreur/
 ### 0.92 beta – 13 Nov 2026
 
 - Keyboard shortcuts ignore Cmd, Ctrl, Alt and Shift, held keys, and typing in fields.
-- `filtreur.js` moved to the root of the repository, next to the demo page.
 
 ### 0.9 beta – 14 May 2019
 
