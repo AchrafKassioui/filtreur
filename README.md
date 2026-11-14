@@ -10,11 +10,11 @@ Demo and documentation: [**achrafkassioui.com/filtreur**](https://www.achrafkass
 
 ## Change Log
 
-### 0.92 beta – 13 Nov 2026
+### 0.92 beta
 
 - Keyboard shortcuts ignore Cmd, Ctrl, Alt and Shift, held keys, and typing in fields.
 
-### 0.9 beta – 14 May 2019
+### 0.9 beta
 
 - First public version.
 
