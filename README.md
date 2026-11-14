@@ -4,9 +4,7 @@
 
 # Filtreur.js
 
-**Declarative user interface library for filtering elements on a web page.**
-
-## Demo & Documentation
+Declarative user interface library for filtering elements on a web page.
 
 Visit [**achrafkassioui.com/filtreur**](https://www.achrafkassioui.com/filtreur/).
 
