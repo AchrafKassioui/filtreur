@@ -1,0 +1,535 @@
+/*************************************************************************************
+*
+* External
+*
+*************************************************************************************/
+
+@import url('/birdview/birdview.css');
+@import url('https://fonts.googleapis.com/css?family=Zilla+Slab:400,700');
+
+/*************************************************************************************
+*
+* Base
+*
+*************************************************************************************/
+
+body{
+    margin: 0;
+    padding: 0;
+    color: #000;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Oxygen-Sans, Ubuntu, Cantarell, sans-serif;
+    font-size: 16px;
+    background: #fff;
+    --accent_color: #f65858;
+}
+
+a, button, select{-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: pointer;}
+a{text-decoration-skip: ink;}
+button{-webkit-appearance: none; -moz-appearance: none;}
+button::-moz-focus-inner, select::-moz-focus-inner {border: 0;}
+*{box-sizing: border-box;}
+
+:focus{
+    outline: solid 3px #222;
+    outline-offset: 2px;
+}
+
+.hidden{
+    display: none!important;
+}
+
+/*************************************************************************************
+*
+* Typography
+*
+*************************************************************************************/
+
+h1, h2, h3,
+#table_of_contents,
+.features p,
+.download ul a,
+.filters{
+    font-family: 'Zilla Slab', serif;
+}
+
+/*************************************************************************************
+*
+* Layout
+*
+*************************************************************************************/
+
+.wrapper{
+    background: url(elements/gridme.png) center top;
+    background-size: 25px;
+}
+
+.container{
+    max-width: 50em;
+    margin: auto;
+    padding: 0 1em;
+}
+
+.header,
+.article,
+.footer{
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+@supports (display: grid){
+    @media screen and (min-width: 1180px){
+        .container{
+            max-width: 1120px;
+            display: grid;
+            grid-template-columns: 800px 320px;
+            justify-content: center;
+        }
+
+        .stretch{
+            grid-column: 1/-1;
+        }
+
+        .column{
+            grid-column: 1/2;
+        }
+
+        .sidebar{
+            grid-column: 2/3;
+        }
+    }
+}
+
+@media screen and (max-width: 960px){
+    body{font-size: 15px;}
+}
+
+/*************************************************************************************
+*
+* Title
+*
+*************************************************************************************/
+
+h1{
+    max-width: 12em;
+    margin: 1em 0;
+    color: var(--accent_color);
+    font-size: 2.5em;
+}
+
+h1 img{
+    vertical-align: -9px;
+}
+
+h1 a{
+    display: inline-block;
+    color: inherit;
+    text-decoration: none;
+}
+
+h1 sup{
+    color: #000;
+    font-size: 0.5em;
+}
+
+/*************************************************************************************
+*
+* Table of contents
+*
+*************************************************************************************/
+
+.table_container{
+    position: relative;
+}
+
+#table_of_contents{
+    position: absolute;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-end;
+    height: 50px;
+    top: -5.5em;
+    right: 0;
+}
+
+.table_button:focus,
+#table_of_contents:hover .table_button,
+#table_of_contents:active .table_button,
+#table_of_contents:focus .table_button{
+    outline: none;
+    background-color: #fff;
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+#table_of_contents:focus-within .table_button{
+    outline: none;
+    background-color: #fff;
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.table_button{
+    position: relative;
+    display: block;
+    width: 60px;
+    height: 50px;
+    margin: 0;
+    padding: 0;
+    color: transparent;
+    border: 1px solid transparent;
+    border-bottom: none;
+    background: #fff url(elements/menu.png) no-repeat center center;
+    background-size: 30px 15px;
+    overflow: hidden;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    z-index: 1;
+}
+
+.table{
+    position: absolute;
+    list-style: none;
+    width: 12em;
+    top: 49px;
+    right: 0;
+    margin: 0;
+    padding: 0.75em 1em 0.5em;
+    font-weight: bold;
+    font-size: 1.125em;
+    line-height: 1.8;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table a{
+    display: block;
+    margin-bottom: 0.5em;
+    color: inherit;
+    text-decoration: none;
+}
+
+.table a:hover,
+.table a:active{
+    text-decoration: underline;
+}
+
+.table_button + .table{
+    opacity: 0;
+    pointer-events: none;
+}
+
+.table:focus-within{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.table:hover,
+.table:focus,
+.table_button:hover + .table,
+.table_button:active + .table,
+.table_button:focus + .table{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/*************************************************************************************
+*
+* Features
+*
+*************************************************************************************/
+
+.features p{
+    margin: 0.75em 0;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.features ol{
+    margin: 1em 0 2em;
+    padding-left: 1em;
+    line-height: 1.6;
+}
+
+.features ol li{
+    margin-bottom: 0.25em;
+}
+
+/*************************************************************************************
+*
+* Download
+*
+*************************************************************************************/
+
+.download{
+    text-align: center;
+}
+
+.download ul{
+    list-style: none;
+    padding: 0;
+}
+
+.download ul li{
+    display: inline-block;
+}
+
+.download ul a{
+    display: block;
+    width: 10em;
+    height: 3.5em;
+    margin: 0.25em 0.125em;
+    padding: 0.375em;
+    text-align: center;
+    text-decoration: none;
+    color: var(--accent_color);
+    font-weight: bold;
+    font-size: 1.125em;
+    background: #fff;
+    border: 2px solid var(--accent_color);
+    border-radius: 0.25em;
+}
+
+.download a.github{
+    color: #333;
+    border-color: #333;
+    background: #eaeaea;
+}
+
+.download span{
+    display: block;
+    font-weight: normal;
+    font-size: 0.875em;
+    line-height: 1.4;
+}
+
+.download ul a:hover,
+.download ul a:active,
+.download ul a:focus{
+    color: #fff;
+    background: var(--accent_color);
+}
+
+.download a.github:hover,
+.download a.github:active,
+.download a.github:focus{
+    color: #fff;
+    background: #333;
+}
+
+.download p{
+    margin-bottom: 0;
+    font-size: 0.875em;
+}
+
+.download p a{
+    color: inherit;
+}
+
+/*************************************************************************************
+*
+* Examples
+*
+*************************************************************************************/
+
+.example{
+    max-width: 36em;
+    margin: 0 auto 2em;
+    padding: 0 1em;
+}
+
+figcaption{
+    margin: 1em;
+    text-align: left;
+    font-size: 0.9375em;
+    line-height: 1.4;
+}
+
+.filters{
+    display: flex;
+    justify-content: center;
+    margin: 1em auto 0;
+    border: 2px solid var(--accent_color);
+    border-radius: 0.25em 0.25em 0 0;
+}
+
+.filters button{
+    flex-grow: 1;
+    height: 2em;
+    margin: 0;
+    padding: 0;
+    color: var(--accent_color);
+    text-align: center;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 0.9375em;
+    line-height: 2;
+    border: none;
+    border-right: 1px solid var(--accent_color);
+    background: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.filters button:last-of-type{border-right: none;}
+
+.filters select{
+    flex-basis: 100%;
+    height: 2.25em;
+    padding-left: 1em;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 1em;
+    line-height: 2.25;
+    border: none;
+    background: transparent url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0Ljk1IDEwIj48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2ZmZjt9LmNscy0ye2ZpbGw6IzQ0NDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPmFycm93czwvdGl0bGU+PHJlY3QgY2xhc3M9ImNscy0xIiB3aWR0aD0iNC45NSIgaGVpZ2h0PSIxMCIvPjxwb2x5Z29uIGNsYXNzPSJjbHMtMiIgcG9pbnRzPSIxLjQxIDQuNjcgMi40OCAzLjE4IDMuNTQgNC42NyAxLjQxIDQuNjciLz48cG9seWdvbiBjbGFzcz0iY2xzLTIiIHBvaW50cz0iMy41NCA1LjMzIDIuNDggNi44MiAxLjQxIDUuMzMgMy41NCA1LjMzIi8+PC9zdmc+) no-repeat 95% 50%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.filters button:active:not(.selected_filter){
+    background-color: rgba(246, 88, 88, 0.05);
+}
+
+.filters button:hover,
+.filters button:focus,
+.filters select:hover,
+.filters select:focus{
+    outline: none;
+    box-shadow: 0 0 0.5em rgba(246, 88, 88, 0.8);
+}
+
+.example .items{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: none;
+    border-radius: 0 0 0.25em 0.25em;
+}
+
+.example .items li{
+    margin: 0;
+    padding: 0.75em;
+    font-size: 0.9375em;
+    line-height: 1.4;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.example .items li:last-of-type{
+    border-bottom: none;
+}
+
+.example .items li a{
+    color: inherit;
+}
+
+.filters button.selected_filter{
+    color: #fff;
+    background: var(--accent_color);
+}
+
+.filtered_out{
+    display: none;
+}
+
+/*************************************************************************************
+*
+* Article
+*
+*************************************************************************************/
+
+.article h2{
+    margin: 1em 0 0;
+    color: var(--accent_color);
+    font-size: 1.5em;
+}
+
+.article h2:first-of-type{
+    margin-top: 0.25em;
+}
+
+.article h3{
+    margin: 1em 0 0;
+    font-size: 1.125em;
+}
+
+.article h2 a,
+.article h3 a{
+    color: inherit;
+    text-decoration: inherit;
+}
+
+.article h2 a:hover,
+.article h3 a:hover{
+    color: var(--accent_color);
+}
+
+.article p,
+.article ul,
+.article ol{
+    max-width: 42em;
+    margin: 1em 0 0;
+    line-height: 1.6;
+}
+
+.article ul,
+.article ol{
+    padding-left: 2em;
+}
+
+.article li{
+    margin-bottom: 0.5em;
+}
+
+.article li p{
+    margin-top: 0;
+}
+
+code{
+    color: #880000;
+    font-family: 'Consolas', monospace;
+}
+
+pre{
+    margin: 1em 0;
+    line-height: 1.3;
+}
+
+pre code{
+    display: block;
+    padding: 0.75em;
+    color: inherit;
+    font-family: 'Consolas', monospace;
+    font-weight: inherit;
+    font-size: 0.9375em;
+    line-height: 1.4;
+    background: rgba(0, 0, 0, 0.025);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 1px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/*************************************************************************************
+*
+* Footer
+*
+*************************************************************************************/
+
+.footer p{
+    margin: 0;
+    text-align: center;
+    color: #555;
+    font-size: 0.875em;
+    line-height: 1.6;
+}
+
+.footer a{
+    white-space: nowrap;
+}

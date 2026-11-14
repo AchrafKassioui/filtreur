@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////////
 //
 // Filtreur.js
-// 0.9 beta
-// 14 May 2019
+// 0.92 beta
+// 13 Nov 2026
 //
 // www.achrafkassioui.com/filtreur/
 //
-// Copyright (C) 2019 Achraf Kassioui
+// Copyright (C) 2026 Achraf Kassioui
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -249,7 +249,10 @@
         }
 
         if (e.type === 'keydown') {
-            var modifiers = e.ctrlKey || e.shiftKey || e.altKey;
+            // Shortcuts fire only on a fresh press with no modifier, and never while typing in a field.
+            var modifiers = e.ctrlKey || e.shiftKey || e.altKey || e.metaKey;
+            var typing = e.target.closest && e.target.closest('input:not([type=button]), textarea, select, [contenteditable]');
+            if (e.repeat || typing) return;
 
             if (filtreur.keycodes[e.keyCode] && !modifiers){
                 var control = document.querySelector('[' + data_attribute_keycode + '="' + e.keyCode + '"]');
@@ -281,11 +284,21 @@
 
 /*
 
-To do
+# Log
+
+- 2 Sep 2026: added Command/Meta modifier exception to keyboard shortcuts
+- 13 Nov 2026: keyboard shortcuts ignore held keys and typing in fields
+
+*/
+
+/*
+
+# To do
 
 - Refactor: sanitize() and getKeyboardShortcuts()
 - Bug: hitting Escape to unfilter a select box does not always select the "all" option
 - Maybe: add unselected_filter CSS class?
 - Maybe: should controls accept multiple filters?
+- Better filter matching. For example, "programming" and "pro" should not be both selected.
 
 */

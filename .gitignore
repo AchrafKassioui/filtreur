@@ -1,0 +1,10 @@
+# Only the code, the demo page, the README's banner and the license are published. Everything else stays local.
+*
+!.gitignore
+!README.md
+!LICENSE
+!filtreur.js
+!index.html
+!filtreur.css
+!elements/
+!elements/filtreur.png

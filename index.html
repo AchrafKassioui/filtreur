@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Filtreur</title>
+    <meta name="Description" content="Declarative user interface library for filtering elements on a web page." />
+    <meta name="theme-color" content="#f65858">
+    <link rel="stylesheet" type="text/css" href="filtreur.css"/>
+</head>
+<body>
+    <div class="wrapper">
+        <header class="container header">
+            <h1 class="stretch"><a href=""><img src="elements/filtreur_medium.png" width="46"> Filtreur.js</a></h1>
+
+            <section class="column table_container">
+                <nav id="table_of_contents">
+                    <button class="table_button" title="Table of contents">Table of contents:</button>
+                    <ul class="table">
+                        <li><a href="#examples">Examples</a></li>
+                        <li><a href="#usage">Usage</a></li>
+                        <li><a href="#options">Options</a></li>
+                        <li><a href="#why">Why Filtreur?</a></li>
+                        <li><a href="#compatibility">Compatibility</a></li>
+                        <li><a href="#license">License</a></li>
+                    </ul>
+                </nav>
+            </section>
+
+            <section class="column">
+                <section class="features">
+                    <p><strong>Declarative user interface library for filtering elements on a web page.</strong></p>
+                    <ol>
+                        <li>Define the controls, the filters, and the data with HTML data attributes.</li>
+                        <li>Set the visual outcome with CSS.</li>
+                        <li>Include filtreur.js and get a live filtering user interface.</li>
+                    </ol>
+                </section>
+            </section>
+
+            <section class="sidebar">
+                <section class="download">
+                    <p class="hidden">Download:</p>
+                    <ul>
+                        <li><a href="filtreur.js" title="JavaScript file">filtreur.js <span>v0.92 beta</span></a></li>
+                        <li><a class="github" title="Go to Github" href="https://github.com/AchrafKassioui/filtreur">Github <span>repository</span></a></li>
+                    </ul>
+                    <p><a href="/" rel="author" title="Author’s homepage">Achraf Kassioui</a>. Updated <time datetime="2026-11-13">13 Nov 2026</time>. <a href="https://github.com/AchrafKassioui/filtreur#change-log">Change&nbsp;log</a></p>
+                </section>
+            </section>
+        </header>
+    </div>
+
+    <article class="container article">
+        <h2 class="stretch" id="examples"><a href="#examples">Examples</a></h2>
+
+        <!-------------------------------------------------------------------------------------------------------------------- EXAMPLE 1 -->
+
+        <section class="column">
+
+<pre><code>&lt;!-- HTML --&gt;
+&lt;!--
+    For each button:
+    "data-filter-in" tells where to filter
+    "data-filter" tells what to filter
+    "data-filter-keycode" defines a keyboard shortcut (optional)
+--&gt;
+&lt;button data-filter-in="items" data-filter="all" class="selected_filter"&gt;All&lt;/button&gt;
+&lt;button data-filter-in="items" data-filter="tech" data-filter-keycode="49"&gt;Technology&lt;/button&gt;
+&lt;button data-filter-in="items" data-filter="phil" data-filter-keycode="50"&gt;Philosophy&lt;/button&gt;
+
+&lt;!-- The collection of elements to filter --&gt;
+&lt;ul data-collection="items"&gt;
+    &lt;!-- Elements to filter have a data-filter attribute --&gt;
+    &lt;li data-filter="phil"&gt;Link&lt;/li&gt;
+    &lt;li data-filter="phil tech"&gt;Link&lt;/li&gt;
+    &lt;li data-filter="tech"&gt;Link&lt;/li&gt;
+    &lt;li data-filter="tech"&gt;Link&lt;/li&gt;
+    &lt;li data-filter="phil"&gt;Link&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- Include filtreur.js --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;filtreur.js&quot;&gt;&lt;/script&gt;</code></pre>
+
+<pre><code>/* CSS */
+.selected_filter{
+    /* styling for the selected filter button */
+    color: #fff;
+    background: #f65858;
+}
+.filtered_out{
+    /* styling for elements that do not match the filter */
+    display: none;
+}</code></pre>
+        </section>
+
+        <section class="sidebar">
+            <figure class="example">
+                <div class="filters">
+                    <button data-filter-in="items_1" data-filter="all" class="selected_filter">All</button>
+                    <button data-filter-in="items_1" data-filter-keycode="49" data-filter="technology">Technology</button>
+                    <button data-filter-in="items_1" data-filter-keycode="50" data-filter="philosophy">Philosophy</button>
+                </div>
+                <ul class="items" data-collection="items_1">
+                    <li data-filter="philosophy">Francisco Varela, <a href="https://www.youtube.com/watch?v=iQeGWwexAH0">On Science, Art and Religion</a> (YouTube), 1983.</li>
+
+                    <li data-filter="technology philosophy education">Alan Kay, <a href="http://www.vpri.org/pdf/m2007007a_revolution.pdf">The Real Computer Revolution Hasn’t Happened Yet</a> (PDF), 2007.</li>
+
+                    <li data-filter="technology">Chaim Gingold, <a href="http://www.levitylab.com/blog/2011/02/brief-history-of-spore/">A Brief History of Spore</a>, 2011.</li>
+
+                    <li data-filter="technology">Jonathan Edwards, <a href="https://docs.google.com/presentation/d/1MD-CgzODFWzdpnYXr8bEgysfDmb8PDV6iCAjH5JIvaI/edit#slide=id.g1da0625f1b_0_56">Gallery of programmer interfaces</a>, 2017.</li>
+
+                    <li data-filter="philosophy">Markus Gabriel, <a href="https://iai.tv/video/i-am-not-a-brain">I Am Not A Brain</a>, 2018.</li>
+                </ul>
+                <figcaption><strong>Filtering with buttons</strong>. Click a button to filter entries</figcaption>
+            </figure>
+        </section>
+
+        <!-------------------------------------------------------------------------------------------------------------------- EXAMPLE 2 -->
+
+        <h3 class="stretch" id="example_select"><a href="#example_select">Example with select</a></h3>
+        <section class="column">
+
+<pre><code>&lt;!-- HTML --&gt;
+&lt;select&gt;
+    &lt;option data-filter-in="items" data-filter="all"&gt;All&lt;/option&gt;
+    &lt;option data-filter-in="items" data-filter="science"&gt;Science&lt;/option&gt;
+    &lt;option data-filter-in="items" data-filter="education"&gt;Education&lt;/option&gt;
+&lt;/select&gt;
+
+&lt;ul data-collection="items"&gt;
+    &lt;li data-filter="science"&gt;Link&lt;/li&gt;
+    &lt;li data-filter="education"&gt;Link&lt;/li&gt;
+    &lt;li data-filter="science"&gt;Link&lt;/li&gt;
+    &lt;li data-filter="science"&gt;Link&lt;/li&gt;
+    &lt;li data-filter="education"&gt;Link&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;filtreur.js&quot;&gt;&lt;/script&gt;</code></pre>
+
+<pre><code>/* CSS */
+.filtered_out{
+    display: none;
+}</code></pre>
+        </section>
+
+        <section class="sidebar">
+            <figure class="example">
+                <div class="filters">
+                    <select autocomplete="off">
+                        <option data-filter-in="items_2" data-filter="all" selected="true">All</option>
+                        <option data-filter-in="items_2" data-filter="science">Science</option>
+                        <option data-filter-in="items_2" data-filter="education">Education</option>
+                    </select>
+                </div>
+                <ul class="items" data-collection="items_2">
+                    <li data-filter="philosophy science">Paul Thagard, <a href="/library/Paul-Thagard-Why-Cognitive-Science-Needs-Philosophy-and-Vice-Versa.pdf">Why Cognitive Science Needs Philosophy and Vice Versa</a> (PDF), 2009.</li>
+
+                    <li data-filter="education">Alan Kay, <a href="/library/Alan-Kay-The-Future-of-Reading.pdf">The Future of Reading</a> (PDF), 2012.</li>
+
+                    <li data-filter="science">Christopher Olah, <a href="http://colah.github.io/posts/2014-03-NN-Manifolds-Topology/">Neural Networks, Manifolds, and Topology</a>, 2014.</li>
+
+                    <li data-filter="science">Michael Nielsen, <a href="http://cognitivemedium.com/vme">The Varieties of Material Existence</a>, 2018.</li>
+
+                    <li data-filter="education">Alberto Pepe, Matteo Cantiello, Josh Nicholson, <a href="https://www.authorea.com/users/3/articles/173764-the-arxiv-of-the-future-will-not-look-like-the-arxiv">The arXiv of the future will not look like the arXiv</a>, 2017.</li>
+                </ul>
+                <figcaption><strong>Filtering with select</strong>. Choose a filter in the dropdown menu</figcaption>
+            </figure>
+        </section>
+
+        <!-------------------------------------------------------------------------------------------------------------------- USAGE -->
+
+        <h2 class="stretch" id="usage"><a href="#usage">Usage</a></h2>
+        <section class="column">
+            <p>Include the JavaScript file in HTML:</p>
+            
+            <pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;filtreur.js&quot;&gt;&lt;/script&gt;</code></pre>
+
+            <p>Filtreur.js starts automatically. The remainder of the setup is done with HTML and CSS.</p>
+
+            <h3 id="controls"><a href="#controls">Controls</a></h3>
+
+            <p>A control is what the user selects to filter elements. A control can be any HTML element, but it is recommended to use a semantically relevant element such as <code>button</code> or <code>select</code>. Example:</p>
+
+            <pre><code>&lt;button data-filter-in="items" data-filter="1" data-filter-keycode="49"&gt;1&lt;/button&gt;</code></pre>
+
+            <ul>
+                <li>
+                    <code>data-filter-in</code>
+                    <p>The name of the collection to filter.</p>
+                </li>
+                <li>
+                    <code>data-filter</code>
+                    <p>The filter to match against.<br>
+                    A value of "all" cancels filtering.</p>
+                </li>
+                <li>
+                    <code>data-filter-keycode</code> (optional)
+                    <p>The keycode for a keyboard shortcut. Find keycodes at <a href="https://keycode.info/" title="Get the JavaScript keycode of pressed keys">keycode.info</a>.<br>
+                    The same keycode declared several times will only call the first control it’s declared on.</p>
+                </li>
+            </ul>
+
+            <h3 id="collections"><a href="#collections">Collections</a></h3>
+
+            <p>A collection contains the elements to filter. A collection can be any HTML container. Example:</p>
+
+<pre><code>&lt;ul data-collection="items"&gt;
+    &lt;li data-filter="2"&gt;2&lt;/li&gt;
+    &lt;li data-filter="1"&gt;1&lt;/li&gt;
+    &lt;li data-filter="1 2"&gt;1 and 2&lt;/li&gt;
+&lt;/ul&gt;    
+</code></pre>
+
+            <ul>
+                <li>
+                    <code>data-collection</code>
+                    <p>The name of the collection. Naming a collection allows to have multiple collections on one page, each targetted by different controls.</p>
+                </li>
+                <li>
+                    <code>data-filter</code>
+                    <p>Filters are user-defined data. The filtering operation is matched against this filter. Multiple filters should be space separated.</p>
+                </li>
+            </ul>
+
+            <h3 id="css"><a href="#css">CSS</a></h3>
+
+            <p>Filtreur shows the result of the filtering by applying CSS classes:</p>
+
+<pre><code>.selected_filter{
+    /* styling for the selected filters, applied to all corresponding controls */
+}
+.filtered_out{
+    /* styling for filtered out elements */
+}
+.filtered_in{
+    /* styling for filtered in elements */
+}</code></pre>
+        </section>
+
+        <!-------------------------------------------------------------------------------------------------------------------- OPTIONS -->
+
+        <h2 class="stretch" id="options"><a href="#options">Options</a></h2>
+        <section class="column">
+            <p>Filtreur does not require to write JavaScript code. However, some settings, API customization, and methods can be accessed with JavaScript.</p>
+
+            <h3 id="settings"><a href="#settings">Settings</a></h3>
+            <p>Default settings can be modified inside <a href="filtreur.js">filtreur.js</a> or by making dedicated JavaScript calls:</p>
+
+<pre><code>//////////////////////////////////////////////////////////////////
+//
+// Default settings
+//
+//////////////////////////////////////////////////////////////////
+
+// Default data-filter value to cancel filtering
+filtreur.all = 'all';
+
+// CSS class applied to elements which do not match a filter
+filtreur.filtered_out = 'filtered_out';
+
+// CSS class applied to elements which match a filter
+filtreur.filtered_in = 'filtered_in';
+
+// CSS class applied to all controls with the selected filter
+filtreur.selected_filter = 'selected_filter';
+
+// Calling the same filter twice in a row cancels filtering.
+// Default is false. Set to true to enable
+filtreur.toggle = false;
+
+// Hitting Escape cancels filtering on the last filtered collection.
+// Default is true. Set to false to disable
+filtreur.escape = true;
+</code></pre>
+
+            <h3 id="API"><a href="#API">API</a></h3>
+            <p>The name of the dedicated data attributes can be customized by changing the values of the following variables inside <a href="filtreur.js">filtreur.js</a>:</p>
+
+<pre><code>//////////////////////////////////////////////////////////////////
+//
+// HTML API
+//
+//////////////////////////////////////////////////////////////////
+
+// HTML5 conventions require data attributes to begin with "data-"
+var data_attribute_filter = 'data-filter';
+var data_attribute_filter_in = 'data-filter-in';
+var data_attribute_collection = 'data-collection';
+var data_attribute_keycode = 'data-filter-keycode';
+</code></pre>
+
+            <h3 id="methods"><a href="#methods">Methods</a></h3>
+            <p>Filtreur provides the following JavaScript methods:</p>
+
+<pre><code>// Filtering
+// Takes a collection and a filter
+filtreur.filter({
+    collection: 'items',
+    filter: '1'
+});
+
+// Unfiltering
+// Filtering with filter: "all" is equivalent to unfiltering.
+// The value "all" can be changed in settings
+filtreur.filter({
+    collection: 'items',
+    filter: 'all'
+});
+
+// Execute a function after filtering
+filtreur.callback_start = myFunction();
+
+// Execute a function after unfiltering
+filtreur.callback_end = myFunction();
+
+// Tell the current selected filter
+filtreur.current_filter;
+
+// Tell the last filtered collection
+filtreur.collection;
+
+// Stop Filtreur from running
+filtreur.stop();
+
+// Start Filtreur. This method is automatically called by filtreur.js
+filtreur.start();
+</code></pre>
+        </section>
+
+        <!-------------------------------------------------------------------------------------------------------------------- WHY -->
+
+        <h2 class="stretch" id="why"><a href="#why">Why Filtreur?</a></h2>
+        <section class="column">
+            <p>I have many web pages where the content is organized by tags, such as the <a href="/">Homepage</a>, the <a href="/reading-list/">Reading list</a>, and the <a href="/blog/">Blog</a>. I wrote Filtreur to get a reusable component that could filter content on any web page.</p>
+
+            <p>I had the following requirements:</p>
+            <ul>
+                <li><strong>Basic filtering</strong>: identify which elements match a given filter. Filters are arbitrary user-defined data.</li>
+                <li><strong>Visual result</strong>: hide/show elements according to filters. Generalize that by applying CSS classes to all filtered elements.</li>
+                <li><strong>Quick setup</strong>: implementing the filtering user interface should require as little work as possible. In the process of designing the best API possible, I settled on a declarative API.</li>
+                <li><strong>Declarative</strong>: the setup should be done within the flow of writing HTML. The setup should not require to switch context and move inside a script area in order to target DOM elements and initialize the logic. Multiple filtering interfaces as well as keyboard shortcuts should be declared in-place next to the data.</li>
+            </ul>
+        </section>
+
+        <!-------------------------------------------------------------------------------------------------------------------- COMPATIBILITY -->
+
+        <h2 class="stretch" id="compatibility"><a href="#compatibility">Compatibility</a></h2>
+        <section class="column">
+            <h3 id="browsers"><a href="#browsers">Supported browsers</a></h3>
+            <ul>
+                <li>Google Chrome.</li>
+                <li>Mozilla Firefox.</li>
+                <li>Mobile Safari.</li>
+                <li>Microsoft Edge.</li>
+                <li>Internet Explorer 11.</li>
+            </ul>
+            
+            <h3 id="issues"><a href="#issues">Known issues</a></h3>
+            <ul>
+                <li>Hitting Escape to unfilter a select box does not always select the "all" option.</li>
+            </ul>
+        </section>
+
+        <!-------------------------------------------------------------------------------------------------------------------- LICENSE -->
+
+        <h2 class="stretch" id="license"><a href="#license">License</a></h2>
+        <section class="column">
+            <p>Filtreur.js is published under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License</a>.</p>
+        </section>
+    </article>
+
+    <footer class="container footer">
+        <p class="stretch">Published <time datetime="2019-03-24">24 March 2019</time> by <a href="/" rel="author" title="Author’s homepage">Achraf Kassioui</a></p>
+    </footer>
+
+    <script type="text/javascript" src="/birdview/birdview.js"></script>
+    <script type="text/javascript" src="/filtreur/filtreur.js"></script>
+    <script type="text/javascript">
+        window.addEventListener('load', function() {
+            (function(){
+                birdview.init();
+            })();
+        }, false);
+    </script>
+    <script type="text/javascript" src="/js/google-analytics.js"></script>
+    <!-- CODE HIGHLIGHTING -->
+    <link rel="stylesheet" href="/js/highlight/styles/default.css">
+    <script type="text/javascript" src="/js/highlight/highlight.pack.js"></script>
+    <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
